@@ -3,20 +3,13 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 import client from "../contentful/client";
 import BookCard from "./BookCard";
 import "./Books.css";
-const axios = require("axios").default;
 
 function Books() {
   const [books, setBooks] = useState();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/books")
-      .then((data) => setBooks(data.data))
-      .catch((error) => console.log(error));
-    // client.getEntries({ content_type: "books" }).then((data) => setBooks(data));
+    client.getEntries({ content_type: "books" }).then((data) => setBooks(data));
   }, []);
-
-  console.log(books);
 
   if (!books) {
     return null;
@@ -26,7 +19,7 @@ function Books() {
       <Row className="g-4">
         <h2>Recommended Readings:</h2>
         {books &&
-          books.map((book, index) => (
+          books.items.map((book, index) => (
             <Col key={index} className="d-flex justify-content-center m-4">
               <BookCard book={book} />
             </Col>
